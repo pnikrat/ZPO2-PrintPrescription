@@ -46,15 +46,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PrescriptionForm.cs">
+    <Compile Include="Presenter\EventArgs.cs" />
+    <Compile Include="Presenter\PrescriptionPresenter.cs" />
+    <Compile Include="View\IPrescriptionForm.cs" />
+    <Compile Include="View\PrescriptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PrescriptionForm.Designer.cs">
+    <Compile Include="View\PrescriptionForm.Designer.cs">
       <DependentUpon>PrescriptionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="PrescriptionForm.resx">
+    <EmbeddedResource Include="View\PrescriptionForm.resx">
       <DependentUpon>PrescriptionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -78,6 +81,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Model\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

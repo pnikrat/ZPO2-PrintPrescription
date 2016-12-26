@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PrintPrescription.Presenter;
+using PrintPrescription.View;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,7 +18,9 @@ namespace PrintPrescription
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new PrescriptionForm());
+            PrescriptionForm view = new PrescriptionForm();
+            PrescriptionPresenter presenter = new PrescriptionPresenter(view);
+            Application.Run(view);
         }
     }
 }

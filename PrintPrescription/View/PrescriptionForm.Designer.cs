@@ -109,6 +109,7 @@
             this.prescriptionNumberBox.Size = new System.Drawing.Size(150, 20);
             this.prescriptionNumberBox.TabIndex = 1;
             this.prescriptionNumberBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.prescriptionNumberBox.Leave += new System.EventHandler(this.prescriptionNumberBox_Leave);
             // 
             // prescriptionNumberLabel
             // 
