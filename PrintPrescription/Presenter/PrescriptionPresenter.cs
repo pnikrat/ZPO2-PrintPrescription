@@ -1,4 +1,5 @@
 ﻿using PrintPrescription.View;
+using PrintPrescription.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace PrintPrescription.Presenter
     class PrescriptionPresenter
     {
         private readonly IPrescriptionForm _form;
+        private PatientData currentPatient;
         
         public PrescriptionPresenter(IPrescriptionForm PrescriptionForm)
         {
             _form = PrescriptionForm;
+            currentPatient = new PatientData();
             SubscribeToFormEvents();
         } 
 
@@ -26,7 +29,7 @@ namespace PrintPrescription.Presenter
 
         private void PrescriptionNumberChanged(object sender, EventArgs<String> args)
         {
-            
+            currentPatient.prescriptionNumber = args.value;
         }
 
         private void GetAvailablePrinters(object sender, EventArgs args)
