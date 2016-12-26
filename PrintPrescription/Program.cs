@@ -20,6 +20,7 @@ namespace PrintPrescription
             Application.SetCompatibleTextRenderingDefault(false);
             PrescriptionForm view = new PrescriptionForm();
             PrescriptionPresenter presenter = new PrescriptionPresenter(view);
+            view.InitializeForm();
             Application.Run(view);
         }
     }

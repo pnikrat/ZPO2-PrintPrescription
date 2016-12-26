@@ -10,9 +10,10 @@ namespace PrintPrescription.View
     public interface IPrescriptionForm
     {
         void ClearPatientData();
-        void SetPatientAgeTest(String args);
+        void PopulatePrinterList(String printer);
 
         event EventHandler<EventArgs<String>> PrescriptionNumberChanged;
+        event EventHandler GetAvailablePrinters;
         
     }
 }

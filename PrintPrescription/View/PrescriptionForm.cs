@@ -15,20 +15,34 @@ namespace PrintPrescription
     public partial class PrescriptionForm : Form, IPrescriptionForm
     {
         public event EventHandler<EventArgs<String>> PrescriptionNumberChanged;
+        public event EventHandler GetAvailablePrinters;
 
         public PrescriptionForm()
         {
             InitializeComponent();
         }
 
-        public void ClearPatientData()
+        public void InitializeForm()
         {
-            patientNameBox.Text = "Test successful";
+            OnGetAvailablePrinters();
         }
 
-        public void SetPatientAgeTest(String args)
+        public void ClearPatientData()
         {
-            ageBox.Text = args;
+            prescriptionNumberBox.ResetText();
+            patientNameBox.Text = "";
+            cityBox.Text = "";
+            ageBox.Text = "";
+            peselBox.Text = "";
+            nfzNumberBox.ResetText();
+            priviligesCheckBox.Checked = false;
+            illnessCheckBox.Checked = false;
+            prescriptionTextBox.Text = "";
+        }
+
+        public void PopulatePrinterList(String printer)
+        {
+            printerList.Items.Add(printer);
         }
 
         protected virtual void OnPrescriptionNumberChanged(EventArgs<String> args)
@@ -36,6 +50,13 @@ namespace PrintPrescription
             var eventHandler = this.PrescriptionNumberChanged;
             if (eventHandler != null)
                 eventHandler.Invoke(this, args);
+        }
+
+        protected virtual void OnGetAvailablePrinters()
+        {
+            var eventHandler = this.GetAvailablePrinters;
+            if (eventHandler != null)
+                eventHandler.Invoke(this, null);
         }
 
         private void prescriptionNumberBox_Leave(object sender, EventArgs e)
