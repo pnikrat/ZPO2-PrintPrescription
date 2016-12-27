@@ -82,7 +82,15 @@ namespace PrintPrescription.Model
 
         public PatientData()
         {
-
+            prescriptionNumber = "0000000000000000000000";
+            patientName = "";
+            city = "";
+            age = 1;
+            pesel = "";
+            nfzNumber = 1;
+            priviliges = false;
+            illness = false;
+            prescriptionText = "";
         }
     }
 }

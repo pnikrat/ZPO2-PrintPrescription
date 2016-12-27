@@ -28,18 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.printerList = new System.Windows.Forms.ComboBox();
             this.printerListLabel = new System.Windows.Forms.Label();
             this.doctorTextBox = new System.Windows.Forms.TextBox();
             this.doctorLabel = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.errorLabel = new System.Windows.Forms.Label();
             this.prescriptionNumberBox = new System.Windows.Forms.MaskedTextBox();
             this.prescriptionNumberLabel = new System.Windows.Forms.Label();
             this.patientNameBox = new System.Windows.Forms.TextBox();
             this.patientNameLabel = new System.Windows.Forms.Label();
             this.cityBox = new System.Windows.Forms.TextBox();
             this.cityLabel = new System.Windows.Forms.Label();
-            this.ageBox = new System.Windows.Forms.TextBox();
             this.ageLabel = new System.Windows.Forms.Label();
             this.peselBox = new System.Windows.Forms.TextBox();
             this.peselLabel = new System.Windows.Forms.Label();
@@ -50,7 +50,11 @@
             this.prescriptionTextBox = new System.Windows.Forms.TextBox();
             this.prescriptionLabel = new System.Windows.Forms.Label();
             this.printStartButton = new System.Windows.Forms.Button();
+            this.ageBox = new System.Windows.Forms.NumericUpDown();
+            this.errorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.nfzNumberBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ageBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // printerList
@@ -92,12 +96,13 @@
             this.doctorLabel.TabIndex = 3;
             this.doctorLabel.Text = "Lekarz:";
             // 
-            // label1
+            // errorLabel
             // 
-            this.label1.Location = new System.Drawing.Point(12, 68);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(493, 58);
-            this.label1.TabIndex = 4;
+            this.errorLabel.Location = new System.Drawing.Point(12, 68);
+            this.errorLabel.Name = "errorLabel";
+            this.errorLabel.Size = new System.Drawing.Size(493, 58);
+            this.errorLabel.TabIndex = 4;
+            this.errorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // prescriptionNumberBox
             // 
@@ -127,6 +132,7 @@
             this.patientNameBox.Name = "patientNameBox";
             this.patientNameBox.Size = new System.Drawing.Size(150, 20);
             this.patientNameBox.TabIndex = 2;
+            this.patientNameBox.Leave += new System.EventHandler(this.patientNameBox_Leave);
             // 
             // patientNameLabel
             // 
@@ -144,6 +150,7 @@
             this.cityBox.Name = "cityBox";
             this.cityBox.Size = new System.Drawing.Size(150, 20);
             this.cityBox.TabIndex = 3;
+            this.cityBox.Leave += new System.EventHandler(this.cityBox_Leave);
             // 
             // cityLabel
             // 
@@ -154,13 +161,6 @@
             this.cityLabel.Size = new System.Drawing.Size(89, 16);
             this.cityLabel.TabIndex = 10;
             this.cityLabel.Text = "Miejscowość:";
-            // 
-            // ageBox
-            // 
-            this.ageBox.Location = new System.Drawing.Point(273, 209);
-            this.ageBox.Name = "ageBox";
-            this.ageBox.Size = new System.Drawing.Size(37, 20);
-            this.ageBox.TabIndex = 4;
             // 
             // ageLabel
             // 
@@ -178,6 +178,7 @@
             this.peselBox.Name = "peselBox";
             this.peselBox.Size = new System.Drawing.Size(150, 20);
             this.peselBox.TabIndex = 5;
+            this.peselBox.Leave += new System.EventHandler(this.peselBox_Leave);
             // 
             // peselLabel
             // 
@@ -192,9 +193,25 @@
             // nfzNumberBox
             // 
             this.nfzNumberBox.Location = new System.Drawing.Point(454, 129);
+            this.nfzNumberBox.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+            this.nfzNumberBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.nfzNumberBox.Name = "nfzNumberBox";
             this.nfzNumberBox.Size = new System.Drawing.Size(51, 20);
             this.nfzNumberBox.TabIndex = 6;
+            this.nfzNumberBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nfzNumberBox.Leave += new System.EventHandler(this.nfzNumberBox_Leave);
             // 
             // nfzNumberLabel
             // 
@@ -216,6 +233,7 @@
             this.priviligesCheckBox.TabIndex = 7;
             this.priviligesCheckBox.Text = "Uprawnienia";
             this.priviligesCheckBox.UseVisualStyleBackColor = true;
+            this.priviligesCheckBox.Leave += new System.EventHandler(this.priviligesCheckBox_Leave);
             // 
             // illnessCheckBox
             // 
@@ -227,6 +245,7 @@
             this.illnessCheckBox.TabIndex = 8;
             this.illnessCheckBox.Text = "Ch. przewlekłe";
             this.illnessCheckBox.UseVisualStyleBackColor = true;
+            this.illnessCheckBox.Leave += new System.EventHandler(this.illnessCheckBox_Leave);
             // 
             // prescriptionTextBox
             // 
@@ -236,6 +255,7 @@
             this.prescriptionTextBox.Name = "prescriptionTextBox";
             this.prescriptionTextBox.Size = new System.Drawing.Size(492, 239);
             this.prescriptionTextBox.TabIndex = 9;
+            this.prescriptionTextBox.Leave += new System.EventHandler(this.prescriptionTextBox_Leave);
             // 
             // prescriptionLabel
             // 
@@ -256,11 +276,39 @@
             this.printStartButton.Text = "Drukuj receptę";
             this.printStartButton.UseVisualStyleBackColor = true;
             // 
+            // ageBox
+            // 
+            this.ageBox.Location = new System.Drawing.Point(258, 210);
+            this.ageBox.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.ageBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.ageBox.Name = "ageBox";
+            this.ageBox.Size = new System.Drawing.Size(52, 20);
+            this.ageBox.TabIndex = 4;
+            this.ageBox.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.ageBox.Leave += new System.EventHandler(this.ageBox_Leave);
+            // 
+            // errorProvider
+            // 
+            this.errorProvider.ContainerControl = this;
+            // 
             // PrescriptionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(517, 636);
+            this.Controls.Add(this.ageBox);
             this.Controls.Add(this.printStartButton);
             this.Controls.Add(this.prescriptionLabel);
             this.Controls.Add(this.prescriptionTextBox);
@@ -271,14 +319,13 @@
             this.Controls.Add(this.peselLabel);
             this.Controls.Add(this.peselBox);
             this.Controls.Add(this.ageLabel);
-            this.Controls.Add(this.ageBox);
             this.Controls.Add(this.cityLabel);
             this.Controls.Add(this.cityBox);
             this.Controls.Add(this.patientNameLabel);
             this.Controls.Add(this.patientNameBox);
             this.Controls.Add(this.prescriptionNumberLabel);
             this.Controls.Add(this.prescriptionNumberBox);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.errorLabel);
             this.Controls.Add(this.doctorLabel);
             this.Controls.Add(this.doctorTextBox);
             this.Controls.Add(this.printerListLabel);
@@ -287,6 +334,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Formularz recepty";
             ((System.ComponentModel.ISupportInitialize)(this.nfzNumberBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ageBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -298,14 +347,13 @@
         private System.Windows.Forms.Label printerListLabel;
         private System.Windows.Forms.TextBox doctorTextBox;
         private System.Windows.Forms.Label doctorLabel;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label errorLabel;
         private System.Windows.Forms.MaskedTextBox prescriptionNumberBox;
         private System.Windows.Forms.Label prescriptionNumberLabel;
         private System.Windows.Forms.TextBox patientNameBox;
         private System.Windows.Forms.Label patientNameLabel;
         private System.Windows.Forms.TextBox cityBox;
         private System.Windows.Forms.Label cityLabel;
-        private System.Windows.Forms.TextBox ageBox;
         private System.Windows.Forms.Label ageLabel;
         private System.Windows.Forms.TextBox peselBox;
         private System.Windows.Forms.Label peselLabel;
@@ -316,6 +364,8 @@
         private System.Windows.Forms.TextBox prescriptionTextBox;
         private System.Windows.Forms.Label prescriptionLabel;
         private System.Windows.Forms.Button printStartButton;
+        private System.Windows.Forms.NumericUpDown ageBox;
+        private System.Windows.Forms.ErrorProvider errorProvider;
     }
 }
 
