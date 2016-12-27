@@ -49,6 +49,7 @@
     <Compile Include="Model\PatientData.cs" />
     <Compile Include="Presenter\EventArgs.cs" />
     <Compile Include="Presenter\PrescriptionPresenter.cs" />
+    <Compile Include="Presenter\PrintingAdapter.cs" />
     <Compile Include="View\IPrescriptionForm.cs" />
     <Compile Include="View\PrescriptionForm.cs">
       <SubType>Form</SubType>

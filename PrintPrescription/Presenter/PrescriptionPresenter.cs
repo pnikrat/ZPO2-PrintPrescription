@@ -128,10 +128,11 @@ namespace PrintPrescription.Presenter
             {
                 _form.SetErrorLabel("Printing successful, can start");
 
-                //do printing in GDI+
+                PrintingAdapter adapter = new PrintingAdapter(currentPatient, (String)_form.GetChosenPrinter());
+                adapter.Printing();
+
                 _form.ClearPatientData();
-                currentPatient = new PatientData();
-                
+                currentPatient = new PatientData();                
             }
             else
             {
