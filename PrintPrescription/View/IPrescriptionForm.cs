@@ -11,8 +11,11 @@ namespace PrintPrescription.View
     public interface IPrescriptionForm
     {
         void ClearPatientData();
+        void SetErrorLabel(String text);
         void SetError(object control, String text);
         void ClearError(object control);
+        int GetErrorCount();
+        object GetChosenPrinter();
         void PopulatePrinterList(String printer);
 
         event EventHandler<EventArgs<String>> PrescriptionNumberChanged;
@@ -24,6 +27,7 @@ namespace PrintPrescription.View
         event EventHandler<EventArgs<bool>> PriviligesChanged;
         event EventHandler<EventArgs<bool>> IllnessChanged;
         event EventHandler<EventArgs<String>> PrescriptionTextChanged;
+        event EventHandler PrintStart;
         event EventHandler GetAvailablePrinters;
         
     }

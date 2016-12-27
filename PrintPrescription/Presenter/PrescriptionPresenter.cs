@@ -32,8 +32,8 @@ namespace PrintPrescription.Presenter
             _form.PriviligesChanged += this.PriviligesChanged;
             _form.IllnessChanged += this.IllnessChanged;
             _form.PrescriptionTextChanged += this.PrescriptionTextChanged;
+            _form.PrintStart += this.PrintStart;
             _form.GetAvailablePrinters += this.GetAvailablePrinters;
-            
         }
 
         private bool ValidatePeselControlSum(String Pesel)
@@ -119,6 +119,24 @@ namespace PrintPrescription.Presenter
         private void PrescriptionTextChanged(object sender, EventArgs<String> args)
         {
             currentPatient.prescriptionText = args.value;
+        }
+
+        private void PrintStart(object sender, EventArgs args)
+        {
+            if (_form.GetErrorCount() == 0 && !String.IsNullOrEmpty((String)_form.GetChosenPrinter())
+                && !currentPatient.PatientDataNotFilled())
+            {
+                _form.SetErrorLabel("Printing successful, can start");
+
+                //do printing in GDI+
+                _form.ClearPatientData();
+                currentPatient = new PatientData();
+                
+            }
+            else
+            {
+                _form.SetErrorLabel("Nie można drukować - brak danych pacjenta lub brak wybranej drukarki");
+            }
         }
 
         private void GetAvailablePrinters(object sender, EventArgs args)

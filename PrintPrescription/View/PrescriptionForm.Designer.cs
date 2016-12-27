@@ -140,9 +140,9 @@
             this.patientNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.patientNameLabel.Location = new System.Drawing.Point(12, 157);
             this.patientNameLabel.Name = "patientNameLabel";
-            this.patientNameLabel.Size = new System.Drawing.Size(100, 16);
+            this.patientNameLabel.Size = new System.Drawing.Size(105, 16);
             this.patientNameLabel.TabIndex = 8;
-            this.patientNameLabel.Text = "Imię i nazwisko:";
+            this.patientNameLabel.Text = "Imię i nazwisko*:";
             // 
             // cityBox
             // 
@@ -158,9 +158,9 @@
             this.cityLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.cityLabel.Location = new System.Drawing.Point(12, 183);
             this.cityLabel.Name = "cityLabel";
-            this.cityLabel.Size = new System.Drawing.Size(89, 16);
+            this.cityLabel.Size = new System.Drawing.Size(94, 16);
             this.cityLabel.TabIndex = 10;
-            this.cityLabel.Text = "Miejscowość:";
+            this.cityLabel.Text = "Miejscowość*:";
             // 
             // ageLabel
             // 
@@ -186,9 +186,9 @@
             this.peselLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.peselLabel.Location = new System.Drawing.Point(12, 237);
             this.peselLabel.Name = "peselLabel";
-            this.peselLabel.Size = new System.Drawing.Size(54, 16);
+            this.peselLabel.Size = new System.Drawing.Size(59, 16);
             this.peselLabel.TabIndex = 14;
-            this.peselLabel.Text = "PESEL:";
+            this.peselLabel.Text = "PESEL*:";
             // 
             // nfzNumberBox
             // 
@@ -275,6 +275,7 @@
             this.printStartButton.TabIndex = 10;
             this.printStartButton.Text = "Drukuj receptę";
             this.printStartButton.UseVisualStyleBackColor = true;
+            this.printStartButton.Click += new System.EventHandler(this.printStartButton_Click);
             // 
             // ageBox
             // 

@@ -92,5 +92,10 @@ namespace PrintPrescription.Model
             illness = false;
             prescriptionText = "";
         }
+
+        public bool PatientDataNotFilled()
+        {
+            return String.IsNullOrEmpty(patientName) || String.IsNullOrEmpty(city) || String.IsNullOrEmpty(pesel);
+        }
     }
 }

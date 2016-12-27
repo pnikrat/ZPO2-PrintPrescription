@@ -23,6 +23,7 @@ namespace PrintPrescription
         public event EventHandler<EventArgs<bool>> PriviligesChanged;
         public event EventHandler<EventArgs<bool>> IllnessChanged;
         public event EventHandler<EventArgs<String>> PrescriptionTextChanged;
+        public event EventHandler PrintStart;
 
         public event EventHandler GetAvailablePrinters;
 
@@ -43,12 +44,17 @@ namespace PrintPrescription
             prescriptionNumberBox.ResetText();
             patientNameBox.Text = "";
             cityBox.Text = "";
-            ageBox.Text = "";
+            ageBox.Value = 1;
             peselBox.Text = "";
-            nfzNumberBox.ResetText();
+            nfzNumberBox.Value = 1;
             priviligesCheckBox.Checked = false;
             illnessCheckBox.Checked = false;
             prescriptionTextBox.Text = "";
+        }
+
+        public void SetErrorLabel(String text)
+        {
+            errorLabel.Text = text;
         }
 
         public void SetError(object control, String text)
@@ -61,6 +67,18 @@ namespace PrintPrescription
         {
             errorProvider.SetError((TextBox)control, "");
             ErrorCount--;
+            if (ErrorCount < 0)
+                ErrorCount = 0;
+        }
+
+        public int GetErrorCount()
+        {
+            return ErrorCount;
+        }
+
+        public object GetChosenPrinter()
+        {
+            return printerList.SelectedItem;
         }
 
         public void PopulatePrinterList(String printer)
@@ -131,11 +149,18 @@ namespace PrintPrescription
                 eventHandler.Invoke(this, args);
         }
 
+        protected virtual void OnPrintStart()
+        {
+            var eventHandler = this.PrintStart;
+            if (eventHandler != null)
+                eventHandler.Invoke(this, null);
+        }
+
         protected virtual void OnGetAvailablePrinters()
         {
             var eventHandler = this.GetAvailablePrinters;
             if (eventHandler != null)
-                eventHandler.Invoke(this, null);
+                eventHandler.Invoke(printerList, null);
         }
 
         private void prescriptionNumberBox_Leave(object sender, EventArgs e)
@@ -190,6 +215,11 @@ namespace PrintPrescription
         {
             TextBox temp = (TextBox)sender;
             OnPrescriptionTextChanged(new EventArgs<String>(temp.Text));
+        }
+
+        private void printStartButton_Click(object sender, EventArgs e)
+        {
+            OnPrintStart();
         }
     }
 }
