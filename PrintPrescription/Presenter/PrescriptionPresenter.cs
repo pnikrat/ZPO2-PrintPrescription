@@ -36,6 +36,21 @@ namespace PrintPrescription.Presenter
             
         }
 
+        private bool ValidatePeselControlSum(String Pesel)
+        {
+            int[] wages = { 9, 7, 3, 1, 9, 7, 3, 1, 9, 7 };
+            int sum = 0;
+            for (int i = 0; i < 10; i++)
+            {
+                sum += wages[i] * (Pesel[i]-48);
+            }
+            int remainder = sum % 10;
+            if (remainder == (Pesel[10] - 48))
+                return true;
+            else
+                return false;
+        }
+
         private void PrescriptionNumberChanged(object sender, EventArgs<String> args)
         {
             currentPatient.prescriptionNumber = args.value;
@@ -74,8 +89,16 @@ namespace PrintPrescription.Presenter
 
         private void PeselChanged(object sender, EventArgs<String> args)
         {
-            //validate PESEL!!
-            currentPatient.pesel = args.value;
+            if (args.value.All(c => Char.IsDigit(c)) && args.value.Length == 11)
+            {
+                if (ValidatePeselControlSum(args.value))
+                {
+                    _form.ClearError(sender);
+                    currentPatient.pesel = args.value;
+                    return;
+                }
+            }
+            _form.SetError(sender, "PESEL nie istnieje lub nie zawiera 11 cyfr");
         }
 
         private void NfzNumberChanged(object sender, EventArgs<int> args)
