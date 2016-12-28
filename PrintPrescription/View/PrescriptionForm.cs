@@ -24,10 +24,9 @@ namespace PrintPrescription
         public event EventHandler<EventArgs<bool>> IllnessChanged;
         public event EventHandler<EventArgs<String>> PrescriptionTextChanged;
         public event EventHandler PrintStart;
+        public event EventHandler<EventArgs<String>> DoctorNameChanged;
 
         public event EventHandler GetAvailablePrinters;
-
-        private int ErrorCount=0;
 
         public PrescriptionForm()
         {
@@ -37,7 +36,6 @@ namespace PrintPrescription
         public void InitializeForm()
         {
             OnGetAvailablePrinters();
-            InitiateMockPatientData();
             ChooseFirstPrinter();
         }
 
@@ -61,25 +59,6 @@ namespace PrintPrescription
             errorLabel.Text = "";
         }
 
-        private void InitiateMockPatientData()
-        {
-            prescriptionNumberBox.Text = "1234567891234567891234";
-            patientNameBox.Text = "Bartłomiej Prędki";
-            cityBox.Text = "Poznań";
-            ageBox.Value = 45;
-            peselBox.Text = "93072313653";
-            nfzNumberBox.Value = 15;
-            priviligesCheckBox.Checked = true;
-            illnessCheckBox.Checked = false;
-            prescriptionTextBox.Text = "Vigantol krople doustne 20 000 j.m / ml (0,5mg)\n"
-                + "l.g. 2a\n"
-                + "DS1x1\n\n"
-                + "Cebion - krople 0,1 g/ml\n"
-                + "lg. jedno opakowanie a\n"
-                + "DS2x1";
-            
-        }
-
         public void SetErrorLabel(String text)
         {
             errorLabel.Text = text;
@@ -88,20 +67,11 @@ namespace PrintPrescription
         public void SetError(object control, String text)
         {
             errorProvider.SetError((Control)control, text);
-            ErrorCount++;
         }
 
         public void ClearError(object control)
         {
             errorProvider.SetError((Control)control, "");
-            ErrorCount--;
-            if (ErrorCount < 0)
-                ErrorCount = 0;
-        }
-
-        public int GetErrorCount()
-        {
-            return ErrorCount;
         }
 
         public object GetChosenPrinter()
@@ -196,6 +166,13 @@ namespace PrintPrescription
                 eventHandler.Invoke(printerList, null);
         }
 
+        protected virtual void OnDoctorNameChanged(EventArgs<String> args)
+        {
+            var eventHandler = this.DoctorNameChanged;
+            if (eventHandler != null)
+                eventHandler.Invoke(doctorTextBox, args);
+        }
+
         private void prescriptionNumberBox_Leave(object sender, EventArgs e)
         {
             MaskedTextBox temp = (MaskedTextBox)sender;
@@ -253,6 +230,12 @@ namespace PrintPrescription
         private void printStartButton_Click(object sender, EventArgs e)
         {
             OnPrintStart();
+        }
+
+        private void doctorTextBox_Leave(object sender, EventArgs e)
+        {
+            TextBox temp = (TextBox)sender;
+            OnDoctorNameChanged(new EventArgs<String>(temp.Text));
         }
     }
 }

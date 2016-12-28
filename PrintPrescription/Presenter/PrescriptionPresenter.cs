@@ -14,32 +14,14 @@ namespace PrintPrescription.Presenter
     {
         private readonly IPrescriptionForm _form;
         private PatientData currentPatient;
+        private Dictionary<string, bool> ErrorDict;
         
         public PrescriptionPresenter(IPrescriptionForm PrescriptionForm)
         {
             _form = PrescriptionForm;
             currentPatient = new PatientData();
             SubscribeToFormEvents();
-            InitiateMockPatientData();
-        }
-
-        private void InitiateMockPatientData()
-        {
-            currentPatient.prescriptionNumber = "1234567891234567891234";
-            currentPatient.patientName = "Bartłomiej Prędki";
-            currentPatient.city = "Poznań";
-            currentPatient.age = 45;
-            currentPatient.pesel = "93072313653";
-            currentPatient.nfzNumber = 15;
-            currentPatient.priviliges = true;
-            currentPatient.illness = false;
-            currentPatient.prescriptionText = "Vigantol krople doustne 20 000 j.m / ml (0,5mg)\n"
-                + "l.g. 2a\n"
-                + "DS1x1\n\n"
-                + "Cebion - krople 0,1 g/ml\n"
-                + "lg. jedno opakowanie a\n"
-                + "DS2x1";
-
+            SetupErrorDict();
         }
 
         private void SubscribeToFormEvents()
@@ -55,6 +37,7 @@ namespace PrintPrescription.Presenter
             _form.PrescriptionTextChanged += this.PrescriptionTextChanged;
             _form.PrintStart += this.PrintStart;
             _form.GetAvailablePrinters += this.GetAvailablePrinters;
+            _form.DoctorNameChanged += this.DoctorNameChanged;
         }
 
         private bool ValidatePeselControlSum(String Pesel)
@@ -72,15 +55,42 @@ namespace PrintPrescription.Presenter
                 return false;
         }
 
+        private void SetupErrorDict()
+        {
+            ErrorDict = new Dictionary<string, bool>();
+            string[] keys = { "PrescriptionNumber", "PatientName", "City", "Pesel" };
+            ErrorDict.Add("Doctor", false);
+            foreach (string x in keys)
+            {
+                ErrorDict.Add(x, true);
+            }
+        }
+
+        private bool CheckForErrors()
+        {
+            if (ErrorDict.Values.Any(v => v == true))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         private void PrescriptionNumberChanged(object sender, EventArgs<String> args)
         {
             if (args.value.Any(c => c != '0'))
             {
                 _form.ClearError(sender);
+                ErrorDict["PrescriptionNumber"] = false;
                 currentPatient.prescriptionNumber = args.value;
             }
             else
+            {
                 _form.SetError(sender, "Numer recepty nie może zawierać samych zer");
+                ErrorDict["PrescriptionNumber"] = true;
+            }
         }
 
         private void PatientNameChanged(object sender, EventArgs<String> args)
@@ -88,11 +98,13 @@ namespace PrintPrescription.Presenter
             if (args.value.All(c => Char.IsLetter(c) || c == ' ') && !String.IsNullOrEmpty(args.value))
             {
                 _form.ClearError(sender);
+                ErrorDict["PatientName"] = false;
                 currentPatient.patientName = args.value;
             }
             else
             {
                 _form.SetError(sender, "Imię i nazwisko nie może być puste i może zawierać tylko litery");
+                ErrorDict["PatientName"] = true;
             }
         }
 
@@ -101,11 +113,13 @@ namespace PrintPrescription.Presenter
             if (args.value.All(c => Char.IsLetter(c) || c == ' ') && !String.IsNullOrEmpty(args.value))
             {
                 _form.ClearError(sender);
+                ErrorDict["City"] = false;
                 currentPatient.city = args.value;
             }
             else
             {
                 _form.SetError(sender, "Miejscowość nie może być pusta i może zawierać tylko litery");
+                ErrorDict["City"] = true;
             }
         }
 
@@ -121,11 +135,13 @@ namespace PrintPrescription.Presenter
                 if (ValidatePeselControlSum(args.value))
                 {
                     _form.ClearError(sender);
+                    ErrorDict["Pesel"] = false;
                     currentPatient.pesel = args.value;
                     return;
                 }
             }
             _form.SetError(sender, "PESEL nie istnieje lub nie zawiera 11 cyfr");
+            ErrorDict["Pesel"] = true;
         }
 
         private void NfzNumberChanged(object sender, EventArgs<int> args)
@@ -150,8 +166,7 @@ namespace PrintPrescription.Presenter
 
         private void PrintStart(object sender, EventArgs args)
         {
-            if (_form.GetErrorCount() == 0 && !String.IsNullOrEmpty((String)_form.GetChosenPrinter())
-                && !currentPatient.PatientDataNotFilled())
+            if (!CheckForErrors() && !String.IsNullOrEmpty((String)_form.GetChosenPrinter()))
             {
                 _form.SetErrorLabel("Drukowanie rozpoczęte");
 
@@ -161,6 +176,7 @@ namespace PrintPrescription.Presenter
                 if (adapter.GetPrintingFinished())
                 {
                     _form.ClearPatientData();
+                    SetupErrorDict();
                     currentPatient = new PatientData();
                 }
                 else
@@ -182,6 +198,20 @@ namespace PrintPrescription.Presenter
             foreach (String printer in PrinterSettings.InstalledPrinters)
             {
                 _form.PopulatePrinterList(printer);
+            }
+        }
+
+        private void DoctorNameChanged(object sender, EventArgs<String> args)
+        {
+            if (args.value.All(c => Char.IsLetter(c) || c == ' ') && !String.IsNullOrEmpty(args.value))
+            {
+                _form.ClearError(sender);
+                ErrorDict["Doctor"] = false;
+            }
+            else
+            {
+                _form.SetError(sender, "Imię i nazwisko lekarza nie może być puste i może zawierać tylko litery");
+                ErrorDict["Doctor"] = true;
             }
         }
     }

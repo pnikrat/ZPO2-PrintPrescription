@@ -85,6 +85,7 @@
             this.doctorTextBox.TabIndex = 1;
             this.doctorTextBox.TabStop = false;
             this.doctorTextBox.Text = "Przemysław Nikratowicz";
+            this.doctorTextBox.Leave += new System.EventHandler(this.doctorTextBox_Leave);
             // 
             // doctorLabel
             // 
