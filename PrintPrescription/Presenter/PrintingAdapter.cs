@@ -7,6 +7,7 @@ using System.Drawing.Printing;
 using PrintPrescription.Model;
 using System.Drawing;
 using System.Windows.Forms;
+using Zen.Barcode;
 
 namespace PrintPrescription.Presenter
 {
@@ -93,16 +94,20 @@ namespace PrintPrescription.Presenter
                 g.DrawString("X", fontX, brush, 230, 225);
 
             g.DrawString("Rp.", fontRegular, brush, 0, 290);
-            Rectangle rectPrescriptionText = new Rectangle(20, 310, 280, 630);
+            Rectangle rectPrescriptionText = new Rectangle(20, 310, 280, 290);
             g.DrawString(_dataToPrint.prescriptionText, fontPatientData, brush, rectPrescriptionText);
 
-            //barcode!!
+            //kod kreskowy
+            Code128BarcodeDraw barcode128 = BarcodeDrawFactory.Code128WithChecksum;
+            Image codeimg = barcode128.Draw(_dataToPrint.prescriptionNumber, new BarcodeMetrics1d(120, 260, 30));
+            Rectangle rectBarcode = new Rectangle(20, 610, 260, 30);
+            g.DrawImage(codeimg, rectBarcode);
 
             g.DrawLine(penRegular, 0, 650, 300, 650);
             g.DrawString("Data wystawienia", fontFooter, brush, 20, 660);
             g.DrawString("Dane id. i podpis lekarza", fontFooter, brush, 170, 660);
             g.DrawString(DateTime.Now.ToShortDateString(), fontPatientData, brush, 0, 675);
-            Rectangle rectDoctorName = new Rectangle(150, 675, 150, 800);
+            Rectangle rectDoctorName = new Rectangle(150, 675, 150, 125);
             g.DrawString(_doctorName, fontPatientData, brush, rectDoctorName);
 
             g.DrawLine(penRegular, 0, 700, 120, 700);
