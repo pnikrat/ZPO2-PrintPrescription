@@ -19,7 +19,27 @@ namespace PrintPrescription.Presenter
             _form = PrescriptionForm;
             currentPatient = new PatientData();
             SubscribeToFormEvents();
-        } 
+            InitiateMockPatientData();
+        }
+
+        private void InitiateMockPatientData()
+        {
+            currentPatient.prescriptionNumber = "1234567891234567891234";
+            currentPatient.patientName = "Bartłomiej Prędki";
+            currentPatient.city = "Poznań";
+            currentPatient.age = 45;
+            currentPatient.pesel = "93072313653";
+            currentPatient.nfzNumber = 15;
+            currentPatient.priviliges = true;
+            currentPatient.illness = false;
+            currentPatient.prescriptionText = "Vigantol krople doustne 20 000 j.m / ml (0,5mg)\n"
+                + "l.g. 2a\n"
+                + "DS1x1\n\n"
+                + "Cebion - krople 0,1 g/ml\n"
+                + "lg. jedno opakowanie a\n"
+                + "DS2x1";
+
+        }
 
         private void SubscribeToFormEvents()
         {

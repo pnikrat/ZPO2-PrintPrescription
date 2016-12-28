@@ -37,6 +37,7 @@ namespace PrintPrescription
         public void InitializeForm()
         {
             OnGetAvailablePrinters();
+            InitiateMockPatientData();
         }
 
         public void ClearPatientData()
@@ -50,6 +51,25 @@ namespace PrintPrescription
             priviligesCheckBox.Checked = false;
             illnessCheckBox.Checked = false;
             prescriptionTextBox.Text = "";
+        }
+
+        private void InitiateMockPatientData()
+        {
+            prescriptionNumberBox.Text = "1234567891234567891234";
+            patientNameBox.Text = "Bartłomiej Prędki";
+            cityBox.Text = "Poznań";
+            ageBox.Value = 45;
+            peselBox.Text = "93072313653";
+            nfzNumberBox.Value = 15;
+            priviligesCheckBox.Checked = true;
+            illnessCheckBox.Checked = false;
+            prescriptionTextBox.Text = "Vigantol krople doustne 20 000 j.m / ml (0,5mg)\n"
+                + "l.g. 2a\n"
+                + "DS1x1\n\n"
+                + "Cebion - krople 0,1 g/ml\n"
+                + "lg. jedno opakowanie a\n"
+                + "DS2x1";
+            
         }
 
         public void SetErrorLabel(String text)
