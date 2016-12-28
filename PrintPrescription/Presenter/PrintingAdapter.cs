@@ -69,7 +69,8 @@ namespace PrintPrescription.Presenter
             //linia górna
             g.DrawLine(penRegular, 0, 120, 300, 120);
             g.DrawString("Pacjent", fontRegular, brush, 0, 130);
-            g.DrawString(_dataToPrint.patientName, fontPatientData, brush, 0, 145);
+            Rectangle rectPatientName = new Rectangle(0, 145, 190, 40);
+            g.DrawString(_dataToPrint.patientName, fontPatientData, brush, rectPatientName);
             g.DrawString(_dataToPrint.city.ToUpper(), fontPatientData, brush, 0, 190);
             g.DrawString("wiek - " + _dataToPrint.age + " lat", fontPatientData, brush, 0, 205);
             g.DrawString("PESEL " + _dataToPrint.pesel, fontPatientData, brush, 0, 250);
@@ -92,7 +93,8 @@ namespace PrintPrescription.Presenter
                 g.DrawString("X", fontX, brush, 230, 225);
 
             g.DrawString("Rp.", fontRegular, brush, 0, 290);
-            g.DrawString(_dataToPrint.prescriptionText, fontPatientData, brush, 20, 310);
+            Rectangle rectPrescriptionText = new Rectangle(20, 310, 280, 630);
+            g.DrawString(_dataToPrint.prescriptionText, fontPatientData, brush, rectPrescriptionText);
 
             //barcode!!
 
@@ -100,7 +102,8 @@ namespace PrintPrescription.Presenter
             g.DrawString("Data wystawienia", fontFooter, brush, 20, 660);
             g.DrawString("Dane id. i podpis lekarza", fontFooter, brush, 170, 660);
             g.DrawString(DateTime.Now.ToShortDateString(), fontPatientData, brush, 0, 675);
-            g.DrawString(_doctorName, fontPatientData, brush, 150, 675);
+            Rectangle rectDoctorName = new Rectangle(150, 675, 150, 800);
+            g.DrawString(_doctorName, fontPatientData, brush, rectDoctorName);
 
             g.DrawLine(penRegular, 0, 700, 120, 700);
             g.DrawLine(penRegular, 0, 750, 120, 750);
