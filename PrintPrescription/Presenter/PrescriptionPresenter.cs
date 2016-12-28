@@ -146,13 +146,18 @@ namespace PrintPrescription.Presenter
             if (_form.GetErrorCount() == 0 && !String.IsNullOrEmpty((String)_form.GetChosenPrinter())
                 && !currentPatient.PatientDataNotFilled())
             {
-                _form.SetErrorLabel("Printing successful, can start");
+                _form.SetErrorLabel("Drukowanie rozpoczęte");
 
-                PrintingAdapter adapter = new PrintingAdapter(currentPatient, (String)_form.GetChosenPrinter());
+                PrintingAdapter adapter = new PrintingAdapter(currentPatient, (String)_form.GetChosenPrinter(),
+                    _form.GetDoctorName());
                 adapter.Printing();
-
-                _form.ClearPatientData();
-                currentPatient = new PatientData();                
+                if (adapter.GetPrintingFinished())
+                {
+                    _form.ClearPatientData();
+                    currentPatient = new PatientData();
+                }
+                else
+                    _form.SetErrorLabel("");         
             }
             else
             {

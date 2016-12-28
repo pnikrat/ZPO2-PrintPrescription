@@ -14,23 +14,41 @@ namespace PrintPrescription.Presenter
     {
         private PatientData _dataToPrint;
         private String _usedPrinter;
+        private String _doctorName;
+        private bool _printingFinished = false;
         private PrintPreviewDialog printPreview = new PrintPreviewDialog();
+        private PrintDialog printDialog = new PrintDialog();
 
-        public PrintingAdapter(PatientData dataToPrint, String usedPrinter)
+        public PrintingAdapter(PatientData dataToPrint, String usedPrinter, String doctorName)
         {
             _dataToPrint = dataToPrint;
             _usedPrinter = usedPrinter;
+            _doctorName = doctorName;
+        }
+
+        public bool GetPrintingFinished()
+        {
+            return _printingFinished;
         }
 
         public void Printing()
         {
             PrintDocument document = new PrintDocument();
             document.OriginAtMargins = true;
+            document.DefaultPageSettings.Landscape = false;
             document.PrinterSettings.PrinterName = _usedPrinter;
             document.PrintPage += new PrintPageEventHandler(ev_PrintPage);
+
             printPreview.Document = document;
+            ((ToolStripButton)((ToolStrip)printPreview.Controls[1]).Items[0]).Enabled = false;
             printPreview.ShowDialog();
-           // document.Print();
+            
+            printDialog.Document = document;
+            if (printDialog.ShowDialog() == DialogResult.OK)
+            {
+                _printingFinished = true;
+                document.Print();
+            }
         }
 
         private void ev_PrintPage(object sender, PrintPageEventArgs args)
@@ -82,7 +100,7 @@ namespace PrintPrescription.Presenter
             g.DrawString("Data wystawienia", fontFooter, brush, 20, 660);
             g.DrawString("Dane id. i podpis lekarza", fontFooter, brush, 170, 660);
             g.DrawString(DateTime.Now.ToShortDateString(), fontPatientData, brush, 0, 675);
-            g.DrawString("Imie i nazwisko lekarza", fontPatientData, brush, 150, 675);
+            g.DrawString(_doctorName, fontPatientData, brush, 150, 675);
 
             g.DrawLine(penRegular, 0, 700, 120, 700);
             g.DrawLine(penRegular, 0, 750, 120, 750);

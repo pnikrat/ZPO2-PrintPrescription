@@ -51,6 +51,7 @@ namespace PrintPrescription
             priviligesCheckBox.Checked = false;
             illnessCheckBox.Checked = false;
             prescriptionTextBox.Text = "";
+            errorLabel.Text = "";
         }
 
         private void InitiateMockPatientData()
@@ -99,6 +100,11 @@ namespace PrintPrescription
         public object GetChosenPrinter()
         {
             return printerList.SelectedItem;
+        }
+
+        public String GetDoctorName()
+        {
+            return doctorTextBox.Text;
         }
 
         public void PopulatePrinterList(String printer)

@@ -16,6 +16,7 @@ namespace PrintPrescription.View
         void ClearError(object control);
         int GetErrorCount();
         object GetChosenPrinter();
+        String GetDoctorName();
         void PopulatePrinterList(String printer);
 
         event EventHandler<EventArgs<String>> PrescriptionNumberChanged;
