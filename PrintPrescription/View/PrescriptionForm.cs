@@ -38,6 +38,13 @@ namespace PrintPrescription
         {
             OnGetAvailablePrinters();
             InitiateMockPatientData();
+            ChooseFirstPrinter();
+        }
+
+        private void ChooseFirstPrinter()
+        {
+            if (printerList.Items.Count > 0)
+                printerList.SelectedIndex = 0;
         }
 
         public void ClearPatientData()
@@ -80,13 +87,13 @@ namespace PrintPrescription
 
         public void SetError(object control, String text)
         {
-            errorProvider.SetError((TextBox)control, text);
+            errorProvider.SetError((Control)control, text);
             ErrorCount++;
         }
 
         public void ClearError(object control)
         {
-            errorProvider.SetError((TextBox)control, "");
+            errorProvider.SetError((Control)control, "");
             ErrorCount--;
             if (ErrorCount < 0)
                 ErrorCount = 0;
@@ -116,7 +123,7 @@ namespace PrintPrescription
         {
             var eventHandler = this.PrescriptionNumberChanged;
             if (eventHandler != null)
-                eventHandler.Invoke(this, args);
+                eventHandler.Invoke(prescriptionNumberBox, args);
         }
 
         protected virtual void OnPatientNameChanged(EventArgs<String> args)

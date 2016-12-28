@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing.Printing;
+using System.Windows.Forms;
 
 namespace PrintPrescription.Presenter
 {
@@ -73,7 +74,13 @@ namespace PrintPrescription.Presenter
 
         private void PrescriptionNumberChanged(object sender, EventArgs<String> args)
         {
-            currentPatient.prescriptionNumber = args.value;
+            if (args.value.Any(c => c != '0'))
+            {
+                _form.ClearError(sender);
+                currentPatient.prescriptionNumber = args.value;
+            }
+            else
+                _form.SetError(sender, "Numer recepty nie może zawierać samych zer");
         }
 
         private void PatientNameChanged(object sender, EventArgs<String> args)
@@ -167,7 +174,11 @@ namespace PrintPrescription.Presenter
 
         private void GetAvailablePrinters(object sender, EventArgs args)
         {
-            //if no printers give error in error label
+            if (PrinterSettings.InstalledPrinters.Count == 0)
+            {
+                MessageBox.Show("Brak drukarek w systemie. Zainstaluj drukarkę i uruchom ponownie program", "Błąd");
+                return;
+            }
             foreach (String printer in PrinterSettings.InstalledPrinters)
             {
                 _form.PopulatePrinterList(printer);
